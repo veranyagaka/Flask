@@ -5,11 +5,31 @@ from wtforms import StringField, SubmitField
 from wtforms.validators import DataRequired
 # sqlalchemy
 from flask_sqlalchemy import SQLAlchemy
+# flask-restful
+from flask_restful import Api, Resource
+
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'sk'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///mydatabase.db'
 db = SQLAlchemy(app)
+api = Api(app)
+class HelloWorld(Resource):
+	def get(self):
+		return {'message': 'hey world'}
+	
+api.add_resource(HelloWorld, '/api')
+# post requests
+from flask import request
+class Add(Resource):
+	def post(self):
+		data = request.get_json()
+		return data
+api.add_resource(Add, '/add')
+'''
+Test using postman or curl
+curl -X POST -H "Content-Type: application/json" -d '{"message": "Hello"}' http://127.0.0.1:5000/add
 
+'''
 class User(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	name = db.Column(db.String(100), unique=True, nullable=False)
@@ -62,4 +82,5 @@ python
 
 sqlite3 mydatabase.db
 .tables
+3. Authentication and User Sessions
 '''
