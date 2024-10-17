@@ -69,7 +69,10 @@ def contact():
 	return render_template('contact.html') # needs to be in templates folder
 
 if __name__ == '__main__':
-	app.run(debug=True)
+	app.config['DEBUG'] = False
+	app.config['SECRET_KEY'] = 'your_secret_key_here'
+
+	app.run()
 
 '''
 from app import db, app
